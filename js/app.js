@@ -57,7 +57,7 @@ app.controller("deleteController", function ($scope, $http, $routeParams) {
 app.controller("updateController", function ($scope, $http, $routeParams) {
 
     $http({
-        url: "http://localhost:8888/employee_crud_app/php/update.php",
+        url: "http://localhost:8888/employee_crud_app/php/read.php",
         params: {id: $routeParams.id},
         method: "get"
     })
@@ -67,6 +67,14 @@ app.controller("updateController", function ($scope, $http, $routeParams) {
 
 
     $scope.saveUpdate = function () {
+
+        $scope.update = {
+            name: $scope.update.name,
+            address: $scope.update.address,
+            salary: $scope.update.salary
+        };
+
+        console.log(JSON.stringify($scope.update));
         if ($scope.update.name === "" || $scope.update.address === "" || $scope.update.salary === "") {
             $("#msg").html("Missing required fields");
         } else {
