@@ -27,7 +27,7 @@ app.config(function ($routeProvider) {
 });
 
 app.controller("employeesController", function ($scope, $http) {
-    $http.get("http://localhost:8888/php/employees.php")
+    $http.get("http://localhost:8888/employee_crud_app/php/employees.php")
         .then(function (response) {
             $scope.employees = response.data;
         });
@@ -35,7 +35,7 @@ app.controller("employeesController", function ($scope, $http) {
 
 app.controller("readController", function ($scope, $http, $routeParams) {
     $http({
-        url: "http://localhost:8888/php/read.php",
+        url: "http://localhost:8888/employee_crud_app/php/read.php",
         params: {id: $routeParams.id},
         method: "get"
     })
@@ -46,7 +46,7 @@ app.controller("readController", function ($scope, $http, $routeParams) {
 
 app.controller("deleteController", function ($scope, $http, $routeParams) {
     $http({
-        url: "http://localhost:8888/php/delete.php",
+        url: "http://localhost:8888/employee_crud_app/php/delete.php",
         params: {id: $routeParams.id},
         method: "get"
     })
@@ -57,7 +57,7 @@ app.controller("deleteController", function ($scope, $http, $routeParams) {
 app.controller("editController", function ($scope, $http, $routeParams) {
 
     $http({
-        url: "http://localhost:8888/php/edit.php",
+        url: "http://localhost:8888/employee_crud_app/php/edit.php",
         params: {id: $routeParams.id},
         method: "get"
     })
@@ -71,7 +71,7 @@ app.controller("editController", function ($scope, $http, $routeParams) {
             $("#msg").html("Missing required fields");
         } else {
             $http({
-                url: "http://localhost:8888/php/edit.php",
+                url: "http://localhost:8888/employee_crud_app/php/edit.php",
                 method: "POST",
                 params: {id: $routeParams.id}
             })
@@ -98,7 +98,7 @@ app.controller("createController", function ($scope) {
         } else {
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8888/php/create.php',
+                url: 'http://localhost:8888/employee_crud_app/php/create.php',
                 data: dataString,
                 cache: false,
                 success: function (result) {

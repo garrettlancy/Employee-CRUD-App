@@ -1,28 +1,19 @@
 <?php
-// Include config file
-require_once "config.php";
-
-// Attempt select query execution
-$sql = "SELECT * FROM employees";
-if ($result = mysqli_query($link, $sql)) {
-    if (mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_array($result)) {
-
-            $id = $row['id'];
-            $name = $row['name'];
-            $address = $row['address'];
-            $salary = $row['salary'];
-            $result[] = array('id' => $id, 'name' => $name, 'address' => $address, 'salary' => $salary);
-        }
-        $json = array('status' => 1, 'info' => $result);
-        // Free result set
-        mysqli_free_result($result);
-    } else {
-        $json = array('status' => 0, 'message' => 'No records were found.');
+include_once 'config.php';
+$sql = "SELECT * FROM employees ORDER by id DESC";
+$query = $link->query($sql);
+if($query->num_rows > 0){
+    while($row = $query->fetch_array()){
+        $id = $row['id'];
+        $name = $row['name'];
+        $address = $row['address'];
+        $salary = $row['salary'];
+        $result[] = array('id'=>$id, 'name'=>$name, 'address'=>$address, 'salary'=>$salary);
     }
+    $json = array('status' => 1, 'info' => $result);
 } else {
-    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+    $json = array('status' => 0, 'message' => 'Employee not found.');
 }
-
-// Close connection
-mysqli_close($link);
+@mysqli_close($link);
+header('Content-type: application/json');
+echo json_encode($json);
