@@ -1,50 +1,27 @@
 <?php
-// Check existence of id parameter before processing further
-if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
-    // Include config file
-    require_once "config.php";
+include_once 'config.php';
 
-    // Prepare a select statement
-    $sql = "SELECT * FROM employees WHERE id = ?";
+$id = $_GET['id'];
+$sql = "SELECT * FROM employees WHERE id = ?;";
+$stmt = mysqli_stmt_init($link);
 
-    if($stmt = mysqli_prepare($link, $sql)){
-        // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "i", $param_id);
+if(!mysqli_stmt_prepare($stmt, $sql)){
+    $json = array('status' => 0, 'msg' => 'Employee not found!');
+} else {
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    mysqli_stmt_execute($stmt);
+    $mySqlResult = mysqli_stmt_get_result($stmt);
 
-        // Set parameters
-        $param_id = trim($_GET["id"]);
-
-        // Attempt to execute the prepared statement
-        if(mysqli_stmt_execute($stmt)){
-            $result = mysqli_stmt_get_result($stmt);
-
-            if(mysqli_num_rows($result) == 1){
-                /* Fetch result row as an associative array. Since the result set contains only one row, we don't need to use while loop */
-                $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-
-                // Retrieve individual field value
-                $name = $row["name"];
-                $address = $row["address"];
-                $salary = $row["salary"];
-            } else{
-                // URL doesn't contain valid id parameter. Redirect to error page
-                header("location: error.php");
-                exit();
-            }
-
-        } else{
-            echo "Oops! Something went wrong. Please try again later.";
-        }
+    while ($row = mysqli_fetch_assoc($mySqlResult)) {
+        $id = $row['id'];
+        $name = $row['name'];
+        $address = $row['address'];
+        $salary = $row['salary'];
+        $result = array('id' => $id, 'name' => $name, 'address' => $address, 'salary' => $salary);
     }
-
-    // Close statement
-    mysqli_stmt_close($stmt);
-
-    // Close connection
-    mysqli_close($link);
-} else{
-    // URL doesn't contain id parameter. Redirect to error page
-    header("location: error.php");
-    exit();
+    $json = $result;
 }
-?>
+
+@mysqli_close($link);
+header('Content-type: application/json');
+echo json_encode($json);

@@ -1,24 +1,26 @@
-<div class="wrapper">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12" ng-controller="readController">
-                <div class="page-header">
-                    <h1>View Record</h1>
-                </div>
-                <div class="form-group">
-                    <label>Name</label>
-                    <p class="form-control-static">{{ read.name }}</p>
-                </div>
-                <div class="form-group">
-                    <label>Address</label>
-                    <p class="form-control-static">{{ read.address }}</p>
-                </div>
-                <div class="form-group">
-                    <label>Salary</label>
-                    <p class="form-control-static">{{ read.salary | currency }}</p>
-                </div>
-                <p><a href="#/" class="btn btn-primary">Back</a></p>
-            </div>
-        </div>
+<div class="col-md-10" ng-controller="readController">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Salary</th>
+            <th scope="col" class="tCenter">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-active">
+            <td>{{read.name}}</td>
+            <td>{{read.address}}</td>
+            <td>{{read.salary}}</td>
+            <td class="tCenter">
+                <a ng-href="#!/update/{{read.id}}" class="btn btn-success">Edit</a>
+                <a ng-href="#!/delete/{{read.id}}" class="btn btn-danger" id="btn-spacing">DELETE</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="col-lg-10 col-lg-offset-2">
+        <a href="#/" class="btn btn-secondary" id="goBack">Back</a>
     </div>
 </div>

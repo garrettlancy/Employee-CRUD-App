@@ -15,7 +15,7 @@ app.config(function ($routeProvider) {
         })
         .when('/update/:id', {
             templateUrl: 'templates/update.html',
-            controller: 'editController'
+            controller: 'updateController'
         })
         .when('/delete/:id', {
             templateUrl: 'templates/delete.html',
@@ -54,29 +54,29 @@ app.controller("deleteController", function ($scope, $http, $routeParams) {
             $scope.delete = response.data;
         });
 });
-app.controller("editController", function ($scope, $http, $routeParams) {
+app.controller("updateController", function ($scope, $http, $routeParams) {
 
     $http({
-        url: "http://localhost:8888/employee_crud_app/php/edit.php",
+        url: "http://localhost:8888/employee_crud_app/php/update.php",
         params: {id: $routeParams.id},
         method: "get"
     })
         .then(function (response) {
-            $scope.edit = response.data;
+            $scope.update = response.data;
         });
 
 
-    $scope.saveEdit = function () {
-        if ($scope.edit.name === "" || $scope.edit.address === "" || $scope.edit.salary === "") {
+    $scope.saveUpdate = function () {
+        if ($scope.update.name === "" || $scope.update.address === "" || $scope.update.salary === "") {
             $("#msg").html("Missing required fields");
         } else {
             $http({
-                url: "http://localhost:8888/employee_crud_app/php/edit.php",
+                url: "http://localhost:8888/employee_crud_app/php/update.php",
                 method: "POST",
                 params: {id: $routeParams.id}
             })
                 .then(function successCallback(response) {
-                    $scope.edit = response.data;
+                    $scope.update = response.data;
                 }, function errorCallback(response) {
                     $scope.error = response.statusText;
                 });
