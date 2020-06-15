@@ -35,6 +35,7 @@ app.controller("employeesController", function ($scope, $http) {
 });
 
 app.controller("readController", function ($scope, $http, $routeParams) {
+    document.getElementById("deleteMessage").hidden = true;
     $http({
         url: "http://localhost:8888/employee_crud_app/php/read.php",
         params: {id: $routeParams.id},
@@ -90,6 +91,7 @@ app.controller("updateController", function ($scope, $http, $routeParams) {
         if ($scope.update.name === "" || $scope.update.address === "" || $scope.update.salary === "") {
             $("#failMsg").html("Missing required fields");
         } else {
+            $("#failMsg").html("");
             $http({
                 url: "http://localhost:8888/employee_crud_app/php/update.php",
                 method: "POST",
