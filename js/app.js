@@ -44,59 +44,77 @@ app.controller("readController", function ($scope, $http, $routeParams) {
         });
 });
 
-app.controller("deleteController", function ($scope, $http, $routeParams) {
-    $http({
-        url: "http://localhost:8888/employee_crud_app/php/delete.php",
-        params: {id: $routeParams.id},
-        method: "get"
-    })
-        .then(function (response) {
-            $scope.delete = response.data;
-        });
+app.controller("deleteController", function ($scope, $http, $routeParams, $window) {
+    $scope.confirmDelete = function (id) {
+        if ($window.confirm("Are you sure?")) {
+            $http({
+                url: "http://localhost:8888/employee_crud_app/php/delete.php",
+                params: {id: id},
+                method: "get"
+            })
+                .then(function (response) {
+                $scope.delete = response.data;
+            });
+
+            $window.location.href = 'http://localhost:8888/employee_crud_app/';
+
+        } else {
+            $window.location.href = 'http://localhost:8888/employee_crud_app/';
+        }
+    }
 });
+
 app.controller("updateController", function ($scope, $http, $routeParams) {
+    document.getElementById("updateMessage").hidden = true;
 
     $http({
         url: "http://localhost:8888/employee_crud_app/php/read.php",
         params: {id: $routeParams.id},
         method: "get"
-    })
-        .then(function (response) {
-            $scope.update = response.data;
-        });
-
+    }).then(function (response) {
+        $scope.update = response.data;
+    });
 
     $scope.saveUpdate = function () {
-
         $scope.update = {
             name: $scope.update.name,
             address: $scope.update.address,
             salary: $scope.update.salary
         };
-
-        console.log(JSON.stringify($scope.update));
         if ($scope.update.name === "" || $scope.update.address === "" || $scope.update.salary === "") {
             $("#msg").html("Missing required fields");
         } else {
             $http({
                 url: "http://localhost:8888/employee_crud_app/php/update.php",
                 method: "POST",
-                params: {id: $routeParams.id}
-            })
-                .then(function successCallback(response) {
+                params: {
+                    id: $routeParams.id,
+                    name: $scope.update.name,
+                    address: $scope.update.address,
+                    salary: $scope.update.salary
+                }
+            }).then(function (response) {
+                $scope.update = response.data;
+
+                $http({
+                    url: "http://localhost:8888/employee_crud_app/php/read.php",
+                    params: {id: $routeParams.id},
+                    method: "get"
+                }).then(function (response) {
                     $scope.update = response.data;
-                }, function errorCallback(response) {
-                    $scope.error = response.statusText;
                 });
+
+                document.getElementById("updateMessage").hidden = false;
+                setTimeout(function() {document.getElementById('updateMessage').hidden = true},3000);
+            });
         }
     }
-
 });
 app.controller("createController", function ($scope) {
     $scope.create = {
-        name:"",
-        address:"",
-        salary:""
+        name: "",
+        address: "",
+        salary: ""
     };
     $scope.save = function () {
         //console.log(JSON.stringify($scope.create));
@@ -106,7 +124,7 @@ app.controller("createController", function ($scope) {
         } else {
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8888/employee_crud_app/php/create.php',
+                url: "http://localhost:8888/employee_crud_app/php/create.php",
                 data: dataString,
                 cache: false,
                 success: function (result) {
@@ -119,4 +137,5 @@ app.controller("createController", function ($scope) {
         }
         return false;
     };
+
 });

@@ -25,7 +25,10 @@
                                 <td class="tCenter">
                                     <a ng-href="#!/read/{{employee.id}}" class="btn btn-info">VIEW</a>
                                     <a ng-href="#!/update/{{employee.id}}" class="btn btn-success">Edit</a>
-                                    <a ng-href="#!/delete/{{employee.id}}" class="btn btn-danger" id="btn-spacing">DELETE</a>
+<!--                                    <a ng-href="#!/delete/{{employee.id}}" class="btn btn-danger" id="btn-spacing">DELETE</a>-->
+                                    <div ng-controller="deleteController">
+                                    <input type="button" class="btn btn-danger" value="DELETE" ng-click="confirmDelete(employee.id)" />
+                                    </div>
                                 </td>
                             </tr>
                             </tbody>
