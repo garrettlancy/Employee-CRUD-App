@@ -27,6 +27,7 @@ app.config(function ($routeProvider) {
 });
 
 app.controller("employeesController", function ($scope, $http) {
+    document.getElementById("deleteMessage").hidden = true;
     $http.get("http://localhost:8888/employee_crud_app/php/employees.php")
         .then(function (response) {
             $scope.employees = response.data;
@@ -53,10 +54,15 @@ app.controller("deleteController", function ($scope, $http, $routeParams, $windo
                 method: "get"
             })
                 .then(function (response) {
-                $scope.delete = response.data;
-            });
+                    $scope.delete = response.data;
+                });
 
-            $window.location.href = 'http://localhost:8888/employee_crud_app/';
+            setTimeout(function () {$window.location.href = 'http://localhost:8888/employee_crud_app/'}, 3000);
+
+            document.getElementById("deleteMessage").hidden = false;
+            setTimeout(function () {
+                document.getElementById('deleteMessage').hidden = true
+            }, 3000);
 
         } else {
             $window.location.href = 'http://localhost:8888/employee_crud_app/';
@@ -82,7 +88,7 @@ app.controller("updateController", function ($scope, $http, $routeParams) {
             salary: $scope.update.salary
         };
         if ($scope.update.name === "" || $scope.update.address === "" || $scope.update.salary === "") {
-            $("#msg").html("Missing required fields");
+            $("#failMsg").html("Missing required fields");
         } else {
             $http({
                 url: "http://localhost:8888/employee_crud_app/php/update.php",
@@ -105,12 +111,15 @@ app.controller("updateController", function ($scope, $http, $routeParams) {
                 });
 
                 document.getElementById("updateMessage").hidden = false;
-                setTimeout(function() {document.getElementById('updateMessage').hidden = true},3000);
+                setTimeout(function () {
+                    document.getElementById('updateMessage').hidden = true
+                }, 3000);
             });
         }
     }
 });
 app.controller("createController", function ($scope) {
+    document.getElementById("createMessage").hidden = true;
     $scope.create = {
         name: "",
         address: "",
@@ -120,8 +129,9 @@ app.controller("createController", function ($scope) {
         //console.log(JSON.stringify($scope.create));
         var dataString = $("#createForm").serialize();
         if ($scope.create.name === "" || $scope.create.address === "" || $scope.create.salary === "") {
-            $("#msg").html("Missing required fields");
+            $("#failMsg").html("Missing required fields");
         } else {
+            $("#failMsg").html("");
             $.ajax({
                 type: 'POST',
                 url: "http://localhost:8888/employee_crud_app/php/create.php",
@@ -132,10 +142,15 @@ app.controller("createController", function ($scope) {
                     $scope.create.name = $("#name").val("");
                     $scope.create.address = $("#address").val("");
                     $scope.create.salary = $("#salary").val("");
+
+                    document.getElementById("createMessage").hidden = false;
+                    setTimeout(function () {
+                        document.getElementById('createMessage').hidden = true
+                    }, 3000);
+
                 }
             });
         }
         return false;
     };
-
 });

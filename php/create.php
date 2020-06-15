@@ -10,11 +10,11 @@ $sql = "INSERT INTO employees(name, address, salary) VALUES (?, ?, ?)";
 $stmt = mysqli_stmt_init($link);
 
 if(!mysqli_stmt_prepare($stmt, $sql)){
-    echo "Failed to add employee";
+    echo "Failed to add employee.";
 } else {
     mysqli_stmt_bind_param($stmt, "sss", $name, $address, $salary);
     mysqli_stmt_execute($stmt);
-    echo "Employee Added Successfully";
+    echo "Employee added successfully!";
 }
 
 @mysqli_close($link);

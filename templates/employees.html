@@ -1,43 +1,36 @@
-<div class="wrapper">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="page-header clearfix">
-                    <h2 class="pull-left">Employees</h2>
-                    <a href="#!/create" class="btn btn-success pull-right">Add New Employee</a>
+<div class="page-header">
+    <a href="#!/create" class="btn btn-success pull-right" title="Add Employee" data-toggle='tooltip'>
+        <i class="fa fa-user-plus" aria-hidden="true"></i></a>
+    <h2><strong>Employee Tracker</strong></h2>
+</div>
+<hr>
+<div ng-controller="employeesController">
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Salary</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="employee in employees.info">
+            <td>{{employee.name}}</td>
+            <td>{{employee.address}}</td>
+            <td>{{employee.salary | currency}}</td>
+            <td>
+                <div class="d-flex justify-content-around" ng-controller="deleteController">
+                <a ng-href="#!/read/{{employee.id}}" title="View Employee" data-toggle='tooltip'><i
+                        class="fa fa-eye" aria-hidden="true"></i></a>
+                <a ng-href="#!/update/{{employee.id}}" title="Edit Employee" data-toggle='tooltip'><i
+                        class="fa fa-pencil" aria-hidden="true"></i></a>
+                <a ng-click="confirmDelete(employee.id)" title="Delete Employee" data-toggle='tooltip'><i
+                        class="fa fa-trash" aria-hidden="true"></i></a>
                 </div>
-                <div class="col-md-10">
-                    <div ng-controller="employeesController">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">Salary</th>
-                                <th scope="col" class="tCenter">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr class="table-active" ng-repeat="employee in employees.info">
-                                <td>{{employee.name}}</td>
-                                <td>{{employee.address}}</td>
-                                <td>{{employee.salary}}</td>
-                                <td class="tCenter">
-                                    <a ng-href="#!/read/{{employee.id}}" class="btn btn-info">VIEW</a>
-                                    <a ng-href="#!/update/{{employee.id}}" class="btn btn-success">Edit</a>
-<!--                                    <a ng-href="#!/delete/{{employee.id}}" class="btn btn-danger" id="btn-spacing">DELETE</a>-->
-                                    <div ng-controller="deleteController">
-                                    <input type="button" class="btn btn-danger" value="DELETE" ng-click="confirmDelete(employee.id)" />
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-    </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="deleteMessage" class="col-md-6 alert alert-success"><p>Employee successfully deleted.</p></div>
 </div>

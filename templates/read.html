@@ -1,26 +1,33 @@
-<div class="col-md-10" ng-controller="readController">
-    <table class="table table-hover">
-        <thead>
+<div class="page-header">
+    <h2>Employee Details</h2>
+</div>
+<div ng-controller="readController">
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
         <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Address</th>
-            <th scope="col">Salary</th>
-            <th scope="col" class="tCenter">Action</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Salary</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
-        <tr class="table-active">
+        <tr>
             <td>{{read.name}}</td>
             <td>{{read.address}}</td>
-            <td>{{read.salary}}</td>
-            <td class="tCenter">
-                <a ng-href="#!/update/{{read.id}}" class="btn btn-success">Edit</a>
-                <a ng-href="#!/delete/{{read.id}}" class="btn btn-danger" id="btn-spacing">DELETE</a>
+            <td>{{read.salary | currency}}</td>
+            <td>
+                <div class="d-flex justify-content-around" ng-controller="deleteController">
+                <a ng-href="#!/update/{{read.id}}" title="Edit Employee" data-toggle='tooltip'><i
+                        class="fa fa-pencil" aria-hidden="true"></i></a>
+                <a ng-click="confirmDelete(read.id)" title="Delete Employee" data-toggle='tooltip'><i
+                        class="fa fa-trash" aria-hidden="true"></i></a>
+                </div>
             </td>
         </tr>
         </tbody>
     </table>
-    <div class="col-lg-10 col-lg-offset-2">
-        <a href="#/" class="btn btn-secondary" id="goBack">Back</a>
+    <div class="d-flex align-self-start">
+        <a href="#/" class="btn btn-primary" title="Back" data-toggle='tooltip'><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
     </div>
 </div>
